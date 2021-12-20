@@ -2,20 +2,34 @@ package com.mj.espressouitestexample.ui.factory
 
 
 import androidx.fragment.app.FragmentFactory
+import com.bumptech.glide.request.RequestOptions
+import com.mj.espressouitestexample.ui.data.source.MoviesDataSource
 import com.mj.espressouitestexample.ui.movie.MovieDetailFragment
 import com.mj.espressouitestexample.ui.movie.DirectorsFragment
 import com.mj.espressouitestexample.ui.movie.StarActorsFragment
 
-class MovieFragmentFactory : FragmentFactory(){
+class MovieFragmentFactory(
+    private val requestOptions: RequestOptions? = null,
+    private val moviesDataSource: MoviesDataSource? = null
+) : FragmentFactory() {
 
     private val TAG: String = "AppDebug"
 
     override fun instantiate(classLoader: ClassLoader, className: String) =
 
-        when(className){
+        when (className) {
 
             MovieDetailFragment::class.java.name -> {
-                MovieDetailFragment()
+                if (requestOptions != null
+                    && moviesDataSource != null
+                ) {
+                    MovieDetailFragment(
+                        requestOptions,
+                        moviesDataSource
+                    )
+                } else {
+                    super.instantiate(classLoader, className)
+                }
             }
 
             DirectorsFragment::class.java.name -> {

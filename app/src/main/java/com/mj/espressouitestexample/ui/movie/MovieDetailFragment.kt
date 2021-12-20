@@ -8,12 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.mj.espressouitestexample.R
 import com.mj.espressouitestexample.databinding.FragmentMovieDetailBinding
 import com.mj.espressouitestexample.ui.data.Movie
+import com.mj.espressouitestexample.ui.data.source.MoviesDataSource
 import com.mj.espressouitestexample.ui.data.source.MoviesRemoteDataSource
 
-class MovieDetailFragment : Fragment(){
+class MovieDetailFragment
+constructor(
+    val requestOptions: RequestOptions,
+    val moviesDataSource: MoviesDataSource
+): Fragment(){
 
     private lateinit var movie: Movie
 
@@ -27,7 +33,7 @@ class MovieDetailFragment : Fragment(){
         super.onCreate(savedInstanceState)
         arguments?.let { args ->
             args.getInt("movie_id").let{ movieId ->
-                MoviesRemoteDataSource.getMovie(movieId)?.let{ movieFromRemote ->
+                moviesDataSource.getMovie(movieId)?.let{ movieFromRemote ->
                     movie = movieFromRemote
                 }
             }
@@ -67,14 +73,13 @@ class MovieDetailFragment : Fragment(){
     }
 
     private fun setMovieDetails(view: View){
-        movie.let{ nonNullMovie ->
-            Glide.with(this)
-                .load(nonNullMovie.image)
-                .into(view.findViewById<ImageView>(R.id.movie_image))
+        Glide.with(this)
+            .applyDefaultRequestOptions(requestOptions)
+            .load(movie.image)
+            .into(view.findViewById<ImageView>(R.id.movie_image))
 
-            view.findViewById<TextView>(R.id.movie_title).text = nonNullMovie.title
-            view.findViewById<TextView>(R.id.movie_description).text = nonNullMovie.description
-        }
+        view.findViewById<TextView>(R.id.movie_title).text = movie.title
+        view.findViewById<TextView>(R.id.movie_description).text = movie.description
     }
 
 }
