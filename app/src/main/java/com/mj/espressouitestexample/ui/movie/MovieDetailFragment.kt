@@ -10,10 +10,8 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mj.espressouitestexample.R
-import com.mj.espressouitestexample.databinding.FragmentMovieDetailBinding
 import com.mj.espressouitestexample.ui.data.Movie
 import com.mj.espressouitestexample.ui.data.source.MoviesDataSource
-import com.mj.espressouitestexample.ui.data.source.MoviesRemoteDataSource
 
 class MovieDetailFragment
 constructor(
