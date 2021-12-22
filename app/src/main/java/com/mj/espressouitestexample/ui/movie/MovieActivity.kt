@@ -1,14 +1,25 @@
 package com.mj.espressouitestexample.ui.movie
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.request.RequestOptions
 import com.mj.espressouitestexample.R
+import com.mj.espressouitestexample.UICommunicationListener
 import com.mj.espressouitestexample.ui.data.source.MoviesDataSource
 import com.mj.espressouitestexample.ui.data.source.MoviesRemoteDataSource
 import com.mj.espressouitestexample.ui.factory.MovieFragmentFactory
 
-class MovieActivity : AppCompatActivity() {
+class MovieActivity : AppCompatActivity(),
+    UICommunicationListener {
+
+    override fun loading(isLoading: Boolean) {
+        if (isLoading)
+            findViewById<ProgressBar>(R.id.progress_bar).visibility = View.VISIBLE
+        else
+            findViewById<ProgressBar>(R.id.progress_bar).visibility = View.INVISIBLE
+    }
 
 
     // dependencies (typically would be injected with dagger)

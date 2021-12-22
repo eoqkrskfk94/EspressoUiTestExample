@@ -2,6 +2,7 @@ package com.mj.espressouitestexample.ui.movie
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
@@ -11,6 +12,9 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.mj.espressouitestexample.R
 import com.mj.espressouitestexample.ui.data.FakeMovieData
 import com.mj.espressouitestexample.ui.movie.MoviesListAdapter.*
+import com.mj.espressouitestexample.util.EspressoIdlingResource
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,6 +24,16 @@ class MovieListFragmentTest {
 
     @get: Rule
     val activityRule = ActivityScenarioRule(MovieActivity::class.java)
+
+    @Before
+    fun registerIdlingResource() {
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+    }
+
+    @After
+    fun unregisterIdlingResource() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+    }
 
     val LIST_ITEM_IN_TEST = 4
     val MOVIE_IN_TEST = FakeMovieData.movies[LIST_ITEM_IN_TEST]
